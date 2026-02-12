@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { SessionTemplate, SessionResult, Question, QuestionType } from '../types';
 import { ArrowLeft, ArrowRight, CheckCircle, ChevronLeft, ChevronRight, X } from 'lucide-react';
@@ -33,12 +34,10 @@ const SessionRunner: React.FC<Props> = ({ template, onComplete, onExit, mode = '
     // Check branching
     if (currentQ.type === QuestionType.MCQ && currentQ.branches) {
       const selectedValue = answers[currentQId];
-      // We need to find the option ID that corresponds to the selected value
       const selectedOption = currentQ.options?.find(o => o.value === selectedValue);
       
       if (selectedOption) {
         const branch = currentQ.branches.find(b => b.optionId === selectedOption.id);
-        // Ensure valid target exists in current template
         if (branch && template.questions.some(q => q.id === branch.targetQuestionId)) {
             return branch.targetQuestionId;
         }
@@ -64,7 +63,6 @@ const SessionRunner: React.FC<Props> = ({ template, onComplete, onExit, mode = '
     }
 
     const nextId = getNextQuestionId();
-
     setHistory(prev => [...prev, currentQId]);
 
     if (nextId) {
@@ -109,9 +107,9 @@ const SessionRunner: React.FC<Props> = ({ template, onComplete, onExit, mode = '
 
   if (completed) {
     return (
-      <div className="flex flex-col items-center justify-center h-full bg-slate-50 p-8">
+      <div className="flex flex-col items-center justify-center h-full bg-accent p-8">
         <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full text-center space-y-6">
-          <div className="w-16 h-16 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto">
             <CheckCircle size={32} />
           </div>
           <div>
@@ -124,7 +122,7 @@ const SessionRunner: React.FC<Props> = ({ template, onComplete, onExit, mode = '
                   Restart Preview
                 </button>
              )}
-             <button onClick={onExit} className="w-full py-2 bg-primary text-white rounded-lg hover:bg-teal-800 font-medium">
+             <button onClick={onExit} className="w-full py-2 bg-primary text-white rounded-lg hover:bg-blue-700 font-medium">
                {mode === 'preview' ? 'Return to Editor' : 'Return to Dashboard'}
              </button>
           </div>
@@ -136,11 +134,11 @@ const SessionRunner: React.FC<Props> = ({ template, onComplete, onExit, mode = '
   if (!currentQ) return <div>Error: Question not found</div>;
 
   return (
-    <div className="flex flex-col h-full bg-slate-50">
+    <div className="flex flex-col h-full bg-accent">
       {/* Session Header */}
       <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <div className="bg-teal-100 text-teal-700 p-1.5 rounded-lg">
+          <div className="bg-blue-100 text-blue-700 p-1.5 rounded-lg">
              <CheckCircle size={18} />
           </div>
           <h1 className="text-lg font-bold text-slate-800 truncate max-w-[200px] md:max-w-md">{template.title}</h1>
@@ -197,7 +195,7 @@ const SessionRunner: React.FC<Props> = ({ template, onComplete, onExit, mode = '
                       <button
                         key={opt.id}
                         onClick={() => handleAnswer(opt.value)}
-                        className={`text-left p-4 rounded-xl border-2 transition-all text-lg font-medium flex items-center justify-between group ${answers[currentQId] === opt.value ? 'border-primary bg-teal-50 text-primary' : 'border-slate-100 hover:border-slate-300 text-slate-700 bg-slate-50'}`}
+                        className={`text-left p-4 rounded-xl border-2 transition-all text-lg font-medium flex items-center justify-between group ${answers[currentQId] === opt.value ? 'border-primary bg-blue-50 text-primary' : 'border-slate-100 hover:border-slate-300 text-slate-700 bg-slate-50'}`}
                       >
                         {opt.label}
                         {answers[currentQId] === opt.value && <CheckCircle size={20} />}
@@ -218,7 +216,7 @@ const SessionRunner: React.FC<Props> = ({ template, onComplete, onExit, mode = '
                               const newArr = isSelected ? currArr.filter(x => x !== opt.value) : [...currArr, opt.value];
                               handleAnswer(newArr);
                             }}
-                            className={`text-left p-4 rounded-xl border-2 transition-all text-lg font-medium flex items-center justify-between ${isSelected ? 'border-primary bg-teal-50 text-primary' : 'border-slate-100 hover:border-slate-300 text-slate-700 bg-slate-50'}`}
+                            className={`text-left p-4 rounded-xl border-2 transition-all text-lg font-medium flex items-center justify-between ${isSelected ? 'border-primary bg-blue-50 text-primary' : 'border-slate-100 hover:border-slate-300 text-slate-700 bg-slate-50'}`}
                           >
                              {opt.label}
                              <div className={`w-5 h-5 rounded border flex items-center justify-center ${isSelected ? 'bg-primary border-primary text-white' : 'border-slate-400 bg-white'}`}>
@@ -261,7 +259,7 @@ const SessionRunner: React.FC<Props> = ({ template, onComplete, onExit, mode = '
             </button>
             <button 
                onClick={handleNext}
-               className="bg-primary hover:bg-teal-800 text-white px-8 py-3 rounded-xl font-semibold shadow-md shadow-teal-200 transition-all flex items-center gap-2"
+               className="bg-primary hover:bg-blue-800 text-white px-8 py-3 rounded-xl font-semibold shadow-md shadow-blue-200 transition-all flex items-center gap-2"
             >
                {getNextQuestionId() === null ? 'Finish Session' : 'Next Question'} <ChevronRight size={20} />
             </button>

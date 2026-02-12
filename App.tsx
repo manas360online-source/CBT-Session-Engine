@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard';
 import SessionBuilder from './components/SessionBuilder';
 import SessionRunner from './components/SessionRunner';
 import ResultsView from './components/ResultsView';
+import TrainingEngine from './components/Training/TrainingEngine';
 import { getTemplates, saveTemplate, deleteTemplate, getResults, saveResult } from './services/storageService';
 
 const App: React.FC = () => {
@@ -55,7 +56,6 @@ const App: React.FC = () => {
   const handleSessionComplete = (r: SessionResult) => {
     saveResult(r);
     setResults(getResults());
-    // Stay on runner completion screen until user exits
   };
   
   const handleAddGenerated = (t: SessionTemplate) => {
@@ -64,7 +64,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+    <div className="min-h-screen bg-accent text-slate-900 font-sans">
       {view === 'DASHBOARD' && (
         <Dashboard 
           templates={templates} 
@@ -75,6 +75,7 @@ const App: React.FC = () => {
           onRun={handleRun}
           onAddGenerated={handleAddGenerated}
           onViewResults={() => setView('RESULTS')}
+          onEnterAcademy={() => setView('TRAINING')}
         />
       )}
 
@@ -109,6 +110,12 @@ const App: React.FC = () => {
           <ResultsView 
             results={results} 
             onBack={() => setView('DASHBOARD')} 
+          />
+      )}
+
+      {view === 'TRAINING' && (
+          <TrainingEngine 
+            onBack={() => setView('DASHBOARD')}
           />
       )}
     </div>

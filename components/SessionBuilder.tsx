@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { SessionTemplate, Question, QuestionType, Option } from '../types';
 import { Plus, Trash2, Save, ArrowLeft, MoreVertical, GripVertical, AlertCircle, GitBranch, Eye } from 'lucide-react';
@@ -112,8 +113,6 @@ const SessionBuilder: React.FC<Props> = ({ initialTemplate, onSave, onCancel, on
   };
 
   const handleSave = () => {
-    // Logic: If it's an existing template, increment version.
-    // If it's new, version is 1.
     const isExisting = !!initialTemplate;
     const newVersion = isExisting ? template.version + 1 : 1;
     
@@ -125,7 +124,7 @@ const SessionBuilder: React.FC<Props> = ({ initialTemplate, onSave, onCancel, on
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-50">
+    <div className="flex flex-col h-full bg-accent">
       {/* Header */}
       <div className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center gap-4">
@@ -147,7 +146,7 @@ const SessionBuilder: React.FC<Props> = ({ initialTemplate, onSave, onCancel, on
           </button>
            <button 
             onClick={handleSave}
-            className="flex items-center gap-2 bg-primary hover:bg-teal-800 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+            className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
           >
             <Save size={18} />
             Save Template
@@ -192,12 +191,12 @@ const SessionBuilder: React.FC<Props> = ({ initialTemplate, onSave, onCancel, on
         </div>
 
         {/* Main Canvas */}
-        <div className="flex-1 overflow-y-auto bg-slate-50 p-8">
+        <div className="flex-1 overflow-y-auto bg-accent p-8">
           <div className="max-w-3xl mx-auto space-y-6">
             {template.questions.map((q, idx) => (
               <div 
                 key={q.id} 
-                className={`bg-white rounded-xl shadow-sm border-2 transition-all ${activeQuestionId === q.id ? 'border-primary ring-4 ring-teal-50' : 'border-transparent hover:border-slate-200'}`}
+                className={`bg-white rounded-xl shadow-sm border-2 transition-all ${activeQuestionId === q.id ? 'border-primary ring-4 ring-blue-50' : 'border-transparent hover:border-slate-200'}`}
                 onClick={() => setActiveQuestionId(q.id)}
               >
                 {/* Question Header */}

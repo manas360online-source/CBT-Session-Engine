@@ -1,16 +1,13 @@
-import { GoogleGenAI, Type, Schema } from "@google/genai";
+
+import { GoogleGenAI, Type } from "@google/genai";
 import { QuestionType, SessionTemplate } from "../types";
 
 // Helper to generate a unique ID
 const generateId = () => Math.random().toString(36).substr(2, 9);
 
 export const generateSessionTemplate = async (topic: string): Promise<SessionTemplate> => {
-  const apiKey = process.env.API_KEY;
-  if (!apiKey) {
-    throw new Error("API Key is missing.");
-  }
-
-  const ai = new GoogleGenAI({ apiKey });
+  // Always use the API key from process.env.API_KEY directly.
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
   const systemInstruction = `
     You are an expert CBT Therapist and Clinical Psychologist. 
@@ -27,8 +24,8 @@ export const generateSessionTemplate = async (topic: string): Promise<SessionTem
     - INFO: Just text display, no input (avoid unless necessary for instructions)
   `;
 
-  // Define the schema for structured output
-  const schema: Schema = {
+  // Define the schema for structured output using Type from @google/genai
+  const schema = {
     type: Type.OBJECT,
     properties: {
       title: { type: Type.STRING, description: "Title of the session" },
@@ -38,7 +35,16 @@ export const generateSessionTemplate = async (topic: string): Promise<SessionTem
         items: {
           type: Type.OBJECT,
           properties: {
-            type: { type: Type.STRING, enum: [QuestionType.TEXT, QuestionType.MCQ, QuestionType.SLIDER, QuestionType.CHECKBOX, QuestionType.INFO] },
+            type: { 
+              type: Type.STRING, 
+              enum: [
+                QuestionType.TEXT, 
+                QuestionType.MCQ, 
+                QuestionType.SLIDER, 
+                QuestionType.CHECKBOX, 
+                QuestionType.INFO
+              ] 
+            },
             prompt: { type: Type.STRING },
             description: { type: Type.STRING, nullable: true },
             min: { type: Type.NUMBER, nullable: true },
@@ -65,8 +71,9 @@ export const generateSessionTemplate = async (topic: string): Promise<SessionTem
     required: ["title", "description", "questions"]
   };
 
+  // Using gemini-3-pro-preview for complex clinical reasoning and structured content generation.
   const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3-pro-preview',
     contents: `Create a CBT session template for: ${topic}`,
     config: {
       systemInstruction,
@@ -75,6 +82,7 @@ export const generateSessionTemplate = async (topic: string): Promise<SessionTem
     }
   });
 
+  // Extract text content directly from the response object
   const text = response.text;
   if (!text) throw new Error("No response from AI");
 

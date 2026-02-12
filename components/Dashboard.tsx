@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SessionTemplate, SessionResult } from '../types';
-import { Plus, Play, Edit, Trash2, FileText, Download, Sparkles, Loader2, BarChart2, Share } from 'lucide-react';
+import { Plus, Play, Edit, Trash2, FileText, Download, Sparkles, Loader2, BarChart2, Share, GraduationCap } from 'lucide-react';
 import { generateSessionTemplate } from '../services/geminiService';
 
 interface Props {
@@ -12,9 +12,10 @@ interface Props {
   onRun: (t: SessionTemplate) => void;
   onAddGenerated: (t: SessionTemplate) => void;
   onViewResults: () => void;
+  onEnterAcademy: () => void;
 }
 
-const Dashboard: React.FC<Props> = ({ templates, results, onCreate, onEdit, onDelete, onRun, onAddGenerated, onViewResults }) => {
+const Dashboard: React.FC<Props> = ({ templates, results, onCreate, onEdit, onDelete, onRun, onAddGenerated, onViewResults, onEnterAcademy }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [genTopic, setGenTopic] = useState('');
   const [showGenModal, setShowGenModal] = useState(false);
@@ -52,7 +53,14 @@ const Dashboard: React.FC<Props> = ({ templates, results, onCreate, onEdit, onDe
           <h1 className="text-3xl font-bold text-slate-900">Therapist Dashboard</h1>
           <p className="text-slate-500 mt-1">Manage your CBT session templates and patient activities.</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
+          <button 
+            onClick={onEnterAcademy}
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white px-4 py-2 rounded-lg font-medium transition-all shadow-md shadow-blue-200"
+          >
+            <GraduationCap size={18} />
+            Therapist Academy
+          </button>
           <button 
             onClick={onViewResults}
             className="flex items-center gap-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg font-medium transition-colors"

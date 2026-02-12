@@ -7,8 +7,8 @@ export enum QuestionType {
 }
 
 export interface Branch {
-  optionId: string; // The ID of the option that triggers this branch
-  targetQuestionId: string; // The ID of the question to jump to
+  optionId: string;
+  targetQuestionId: string;
 }
 
 export interface Option {
@@ -22,14 +22,14 @@ export interface Question {
   type: QuestionType;
   prompt: string;
   description?: string;
-  options?: Option[]; // For MCQ, CHECKBOX
-  min?: number; // For SLIDER
-  max?: number; // For SLIDER
-  step?: number; // For SLIDER
-  minLabel?: string; // For SLIDER
-  maxLabel?: string; // For SLIDER
+  options?: Option[];
+  min?: number;
+  max?: number;
+  step?: number;
+  minLabel?: string;
+  maxLabel?: string;
   required?: boolean;
-  branches?: Branch[]; // Branching logic mainly for MCQ
+  branches?: Branch[];
 }
 
 export interface SessionTemplate {
@@ -47,8 +47,8 @@ export interface SessionResult {
   templateId: string;
   templateTitle: string;
   completedAt: string;
-  answers: Record<string, any>; // questionId -> value
-  pathTaken: string[]; // List of question IDs visited
+  answers: Record<string, any>;
+  pathTaken: string[];
 }
 
-export type ViewState = 'DASHBOARD' | 'BUILDER' | 'RUNNER' | 'RESULTS' | 'PREVIEW';
+export type ViewState = 'DASHBOARD' | 'BUILDER' | 'RUNNER' | 'RESULTS' | 'PREVIEW' | 'TRAINING';
